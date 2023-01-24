@@ -9,6 +9,8 @@ public interface CourseService {
     void saveCourse(String name, String turno, String startTime, String professorId) throws Exception;
     
     void deleteCourse(Long id)  throws Exception;
+    
+    CourseDto removeProfessor(Long id)  throws Exception;
 
     CourseDto updateCourse(String name, String turno, String startTime, String professorId, Long id) throws Exception;
     

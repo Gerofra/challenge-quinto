@@ -85,12 +85,8 @@ public class CourseController {
     @GetMapping("/courses/update/{id}")
     public String update(@PathVariable("id") Long id,
     		RedirectAttributes redirectAttrs){
-    	
-    	List<CourseDto> users = courseService.findAllCourses();
-    	redirectAttrs.addFlashAttribute("allusers", users);
-    	 	
+       	 	
     	CourseDto existing = courseService.findById(id); 	
-  	
         redirectAttrs.addFlashAttribute("editableCourse", existing);
               
         return "redirect:/courses";
@@ -104,7 +100,7 @@ public class CourseController {
 	    		@RequestParam(value="professorId", required=false) String professorId,
 	    		@RequestParam("id") Long id,
 	            Model model){
-        CourseDto existing = courseService.findById(id);
+
         try {
 			courseService.updateCourse(name, turno, startTime, professorId, id);
 		} catch (Exception e) {
@@ -129,6 +125,22 @@ public class CourseController {
         
         
         return "redirect:/users";
+    }
+    
+    @GetMapping("/courses/remove-professor/{id}")
+    public String removeProfessor(@PathVariable("id") Long id,
+    		RedirectAttributes redirectAttrs, Model model){
+    	 	
+    	CourseDto existing = courseService.findById(id);
+    	try {
+			courseService.removeProfessor(id);
+			redirectAttrs.addFlashAttribute("editableCourse", existing);
+		} catch (Exception e) {
+			model.addAttribute("error", e);
+			return "courses";
+		}
+                  
+        return "redirect:/courses?success";
     }
     
 }

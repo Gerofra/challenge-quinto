@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.universidadquinto.dto.CourseDto;
-import com.universidadquinto.dto.UserDto;
 import com.universidadquinto.entity.Course;
 import com.universidadquinto.entity.User;
 import com.universidadquinto.enums.TurnoEnum;
@@ -220,6 +218,23 @@ public class CourseServiceImpl implements CourseService {
 			throw new Exception("No se puedo actualizar.");
 		}
         
+	}
+
+	@Override
+	public CourseDto removeProfessor(Long id) throws Exception {
+		
+		Optional<Course> exist = courseRepository.findById(id);
+		
+        if (exist.isPresent()) {
+        	Course updated = exist.get();
+
+            updated.setProfessor(null);   
+            courseRepository.save(updated);
+            
+			return convertEntityToDto(updated);
+		} else {
+			throw new Exception("No se puedo actualizar.");
+		}
 	}
 
 	

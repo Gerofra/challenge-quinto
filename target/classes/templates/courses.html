@@ -73,22 +73,22 @@
 		        </div>
 		        
 		        <div class="double__column">       
-				    <span>Turno actual: <span th:text="${editableCourse.turno}"></span></span>
-				    <span>Hora actual: <span th:text="${editableCourse.start}"></span></span>
+				    <span>Turno actual: <span th:text="${editableCourse.turno}"></span></span><br>
+				    <span>Hora actual: <span th:text="${editableCourse.start}"></span></span><br>
 		        </div>
 		        
 				    <select class="form-control full" id="professorId" th:name="professorId">
 				    	<option value="" th:text="Profesor"></option>
 					    <option th:each="prof : ${professors}" th:value="${prof.id}" th:text="${prof.name}"></option>
 				    </select> 
-				    
-					<div>
-						Profesor actual: <span th:text="${editableCourse.professor}"></span>
-						<a th:href="@{'/courses/delete-professor/' + ${course.id}}">Eliminar</a>
-					</div>	
 					
 					<input type="hidden" th:value="${editableCourse.id}" name="id" />
-			    <button type="submit">Registrar</button>
+			    <button type="submit">Registrar</button><br>
+			    
+			    <div>
+					Profesor actual: <span th:text="${editableCourse.professor}"></span>
+					<a class="link__btn__clear" th:href="@{'/courses/remove-professor/' + ${editableCourse.id}}">Eliminar</a>
+				</div>
 		
 				<div>
 					<p>Alumnos:</p>
