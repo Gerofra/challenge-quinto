@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidad Quinto</title>
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+
+<body>
+
+
+	<div class="main__container">
+	
+		<div class="top__container">
+			<h3>Bienvenido</h3>
+			<h1>Universidad Quinto</h1>
+		</div>
+		
+		<div class="mid__container">
+			<a th:href="@{/login}" class="link__btn__blue">Ingresar</a>
+			<a th:href="@{/register}">Registrarme</a>
+		</div>
+		
+	</div>	
+
+
+</body>
+</html>

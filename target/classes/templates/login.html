@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar</title>
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+
+
+	<div class="main__container">
+	
+		<div th:if="${param.error}">
+			<div class="alert alert-danger">Email o contraseña incorrecta.</div>
+		</div>
+            
+		<div th:if="${param.logout}">
+			<div class="alert alert-success">Has salido con éxito.</div>
+        </div>	
+	
+	
+		<div class="top__container">		
+			<h1>Ingreso</h1>
+			<h3></h3>
+		</div>
+		
+		
+		<div class="mid__container">
+		
+			<form method="post" th:action="@{/login}" role="form">
+                    
+	            <input type="text" id="username" name="username" placeholder="Email"/>
+	
+	            <input type="password" id="password" name="password" placeholder="Contraseña"/>
+	
+	            <button type="submit">Ingresar</button>
+
+			</form>
+			
+		</div>
+		
+	</div>	
+
+
+
+</body>
+</html>

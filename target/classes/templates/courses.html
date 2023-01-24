@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de cursos</title>
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+
+
+	<nav>
+		<a class="link__btn__clear" th:href="@{/users}">Usuarios</a>
+		<a class="link__btn__clear" th:href="@{/courses}">Cursos</a>
+		<a class="link__btn__dark" th:href="@{/logout}">Salir</a>
+	</nav>
+	
+	<div class="alert__or" th:if="${param.success}">
+		¡Se guardó con éxito!
+	</div> 	
+	
+	<div class="alert__or" th:if="${error}" th:text="${error}"></div>
+	
+	
+	<div class="main__container">
+	
+		<div class="top__container">
+
+		   	<form class="full__form" method="post" role="form" th:action="@{/courses/save}" th:if="${editableCourse == null}">
+		    	
+				<h3>Crear nuevo curso</h3> 
+							 
+		        <input type="text" id="name" name="name" th:value="${name}" placeholder="Nombre del curso"/>
+		        
+		        <div class="double__column">       
+				    <select class="select__option" id="turno" th:name="turno">
+						<option th:value="MORNING" th:text="Mañana"></option>
+						<option th:value="AFTERNOON" th:text="Tarde"></option>
+						<option th:value="NIGHT" th:text="Noche"></option>
+					</select>
+				         
+    				<input type="time" id="startTime" name="startTime" th:value="${startTime}"/>
+				          
+		        </div>
+		        
+				    <select class="form-control full" id="professorId" th:name="professorId">
+					    <option th:each="prof : ${professors}" th:value="${prof.id}" th:text="${prof.name}"></option>
+				    </select> 
+						
+			    <button type="submit">Registrar</button>
+		
+			</form>
+			
+			
+			<form class="full__form" method="post" role="form" th:action="@{/courses/update/save}" th:if="${editableCourse != null}">
+		    	
+				<h3>Editar curso</h3> 
+				<p>Complete unicamente los campos que desee modificar</p>			 
+							 
+		        <input type="text" id="name" name="name" th:value="${name}" th:placeholder="${editableCourse.name}"/>
+		        
+		        <div class="double__column">       
+				    <select class="select__option" id="turno" th:name="turno">
+				    	<option value="" th:text="Turno"></option>
+						<option th:value="MORNING" th:text="Mañana"></option>
+						<option th:value="AFTERNOON" th:text="Tarde"></option>
+						<option th:value="NIGHT" th:text="Noche"></option>
+					</select>
+				         
+    				<input type="time" id="startTime" name="startTime" th:value="${startTime}"/>
+		        </div>
+		        
+		        <div class="double__column">       
+				    <span>Turno actual: <span th:text="${editableCourse.turno}"></span></span>
+				    <span>Hora actual: <span th:text="${editableCourse.start}"></span></span>
+		        </div>
+		        
+				    <select class="form-control full" id="professorId" th:name="professorId">
+				    	<option value="" th:text="Profesor"></option>
+					    <option th:each="prof : ${professors}" th:value="${prof.id}" th:text="${prof.name}"></option>
+				    </select> 
+				    
+					<div>
+						Profesor actual: <span th:text="${editableCourse.professor}"></span>
+						<a th:href="@{'/courses/delete-professor/' + ${course.id}}">Eliminar</a>
+					</div>	
+					
+					<input type="hidden" th:value="${editableCourse.id}" name="id" />
+			    <button type="submit">Registrar</button>
+		
+				<div>
+					<p>Alumnos:</p>
+						<ul th:each="student: ${editableCourse.students}">
+						  <li th:text="${student.name + ' ' + student.lastname}"></li>
+						</ul>			 
+
+			     </div>
+		
+			</form>	    	    
+		    
+			<form th:action="@{/courses/search}" th:if="${editableCourse != null}">
+			    <div>
+			        <label for = "student">Buscar estudiante: </label>
+			        <select class="full" id="student" name="student">
+			            <option selected disabled hidden style="display: none;" value=""></option>
+			            <option th:each="student: ${editableCourse.students}" th:value="${student.id}" th:text="${student.name}" th:data = "${student.name}"></option>
+			        </select>
+			        
+			        <input type="hidden" th:value="${editableCourse.id}" name="id" />
+			        <button type="submit">Buscar</button>
+			    </div>
+			</form>
+		    
+		</div>
+		
+		<div th:if="${allcourses}" class="mid__container">
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Hora</th>
+		                <th>Cant.</th>
+		                <th>Profesor</th>
+		                <th></th>
+		                <th></th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="course: ${allcourses}">
+		                <td th:text="${course.name}"></td>
+		                <td th:text="${course.start}"></td>
+		                <td th:if="${course.students!=null and !course.students.isEmpty()}" 
+		                	th:text="${#lists.size(course.students)}"></td>
+		                <td th:if="${course.students==null or course.students.isEmpty()}">0</td>	
+		                <td th:text="${course.professor}"></td>
+		                <td><a th:href="@{'/courses/update/' + ${course.id}}">Editar</a></td>
+		                <td><a th:href="@{'/courses/delete/' + ${course.id}}">Eliminar</a></td>	                
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+	</div>	
+
+</body>
+</html>

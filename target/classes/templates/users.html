@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de usuarios</title>
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+
+
+	<nav>
+		<a class="link__btn__clear" th:href="@{/users}">Usuarios</a>
+		<a class="link__btn__clear" th:href="@{/courses}">Cursos</a>
+		<a class="link__btn__dark" th:href="@{/logout}">Salir</a>
+	</nav>
+	
+	<div class="alert__or" th:if="${param.success}">
+		¡Se guardó con éxito!
+	</div> 	
+	
+	<div class="alert__or" th:if="${error}" th:text="${error}"></div>
+	
+	<div class="main__container">
+	
+		<div class="top__container" th:if="${user}">
+
+		   	<form class="full__form" method="post" role="form" th:action="@{/users/update/save/}+ ${user.id}" th:object="${user}">
+		    	
+				<h3>Editar usuario: <strong th:text="${user.name + ' ' + user.lastname}"></strong></h3>  
+		        
+		        <div class="double__column">       
+				    <input type="text" id="name" name="name" th:field="*{name}" th:placeholder="${user.name}"/>
+				    <p th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></p>
+				        
+				    <input type="text" id="lastname" name="lastname" th:field="*{lastname}" th:placeholder="${user.lastname}"/>                   
+			        <p th:errors="*{lastname}" th:if="${#fields.hasErrors('lastname')}"></p>   
+		        </div>
+		            
+			    <input type="text" id="email" name="email" th:field="*{email}" th:placeholder="${user.email}"/>
+			    <p th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></p>
+			
+				<div class="double__column"> 
+				    <input type="password" id="password" name="password" th:field="*{password}" placeholder="Contraseña"/>
+				    <p th:errors="*{password}" th:if="${#fields.hasErrors('password')}"></p>
+				        
+			        <input type="date" id="date" name="date" th:field="*{date}" th:value="${#dates.format(user.date, 'yyyy-MM-dd')}"/>
+				    <p th:errors="*{date}" th:if="${#fields.hasErrors('date')}"></p>
+			    </div>
+			    
+			    <input type="hidden" th:value="${user.id}" name="id" />
+						
+			    <button type="submit">Guardar</button>
+		
+			</form>
+		        
+		    <form method="post" role="form" th:action="@{/users/role/save}">
+		
+				<label for="role">Permisos</label>
+				
+				<div class="double__column"> 
+					<select class="select__option" id="role" th:name="role">
+						<option th:value="ROLE_STUDENT" th:text="Estudiante"></option>
+						<option th:value="ROLE_PROFESSOR" th:text="Profesor"></option>
+						<option th:value="ROLE_STUDENT" th:text="Usuario"></option>
+						<option th:value="ROLE_ADMIN" th:text="Administrador"></option>
+					</select>
+						
+					<input type="hidden" th:value="${user.id}" name="id" />
+				
+					<button type="submit">Guardar</button>
+				</div>
+		
+			</form>
+		  	
+		    <table th:if="${user.courses}">
+		        <thead>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Profesor</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="course: ${user.courses}">
+		                <td th:text="${course.name}"></td>
+		                <td th:text="${course.professor}"></td>
+		            </tr>
+		        </tbody>
+		    </table>
+		    
+	    
+		    
+		</div>
+		
+		<div class="mid__container">
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Edad</th>
+		                <th>Email</th>
+		                <th>Rol</th>
+		                <th></th>
+		                <th></th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="user: ${allusers}">
+		                <td th:text="${user.name + ' ' + user.lastname}"></td>
+		                <td th:text="${user.age}"></td>
+		                <td th:text="${user.email}"></td>
+		                <td th:text="${user.role}"></td>
+		                <td><a th:href="@{/users/update/{email}(email=${user.email})}">Editar</a></td>		                
+		                <td><a th:href="@{/users/delete/{id}(id=${user.id})}">Eliminar</a></td>
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+	</div>	
+
+</body>
+</html>

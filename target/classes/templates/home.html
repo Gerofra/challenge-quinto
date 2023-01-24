@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de control</title>
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+
+
+	<nav>
+		<a th:if="${priv}" class="link__btn__clear" th:href="@{/users}">Usuarios</a>
+		<a th:if="${priv}" class="link__btn__clear" th:href="@{/courses}">Cursos</a>
+		<a class="link__btn__dark" th:href="@{/logout}">Salir</a>
+	</nav>
+	
+	<div class="alert__or" th:if="${success}" th:text="${success}"></div>	
+		
+	<div class="main__container">
+	
+		<div class="top__container">			
+			<h3>Hola, <span th:text="${currentUser.getName() + ' ' + currentUser.getLastname()}"></span></h3> 					
+		</div>
+		
+		<div th:if="${allcourses}" class="mid__container">
+			<h3>Mis cursos</h3>
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Hora</th>
+		                <th>Cant.</th>
+		                <th>Profesor</th>
+		                <th></th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="course: ${allcourses}">
+		                <td th:text="${course.name}"></td>
+		                <td th:text="${course.start}"></td>
+		                <td th:if="${course.students!=null and !course.students.isEmpty()}" 
+		                	th:text="${#lists.size(course.students)}"></td>
+		                <td th:if="${course.students==null or course.students.isEmpty()}">0</td>	
+		                <td th:text="${course.professor}"></td>
+		                <td><a th:href="@{/home/join/{courseId}/{userId}(courseId = ${course.id}, userId = ${currentUser.getId()})}">Abandonar</a></td>               
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+		
+		<div th:if="${nocourses}" class="mid__container">
+			<h3>Cursos disponibles</h3>
+		    <table>
+		        <thead>
+		            <tr>
+		                <th>Nombre</th>
+		                <th>Hora</th>
+		                <th>Cant.</th>
+		                <th>Profesor</th>
+		                <th></th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="course: ${nocourses}">
+		                <td th:text="${course.name}"></td>
+		                <td th:text="${course.start}"></td>
+		                <td th:if="${course.students!=null and !course.students.isEmpty()}" 
+		                	th:text="${#lists.size(course.students)}"></td>
+		                <td th:if="${course.students==null or course.students.isEmpty()}">0</td>	
+		                <td th:text="${course.professor}"></td>
+		                <td><a th:href="@{/home/join/{courseId}/{userId}(courseId = ${course.id}, userId = ${currentUser.getId()})}">Unirme</a></td>             
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+	</div>	
+
+</body>
+</html>
