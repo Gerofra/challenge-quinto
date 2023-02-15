@@ -1,5 +1,14 @@
 # challenge-quinto
 Java Challenge Quinto Impacto
+
 ## administrador autogenerado
-Email: admin@admin.com
-Pass: admin
+
+| EMAIL  | PASSWORD |
+| ------------- | ------------- |
+| admin@admin.com  | admin  |
+
+## to-do
+- Formateo de código
+- Relaciones
+- Transactionals
+- Excepciones
